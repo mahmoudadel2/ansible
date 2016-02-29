@@ -1,0 +1,35 @@
+---
+- name: Install Python APT
+  apt: pkg=python-apt state=installed update_cache=true
+  register: pyaptdone
+
+- name: Add Mongo Repository Key
+  apt_key: keyserver="{{ keyserver }}" id="{{ keyid }}"
+  register: repokeydone
+  when: pyaptdone|success
+
+- name: Add Mongo Repository
+  apt_repository: repo="{{ repo }}" state=present
+  when: repokeydone|success
+  register: ppadone
+
+- name: Install Mongo
+  apt: pkg=mongodb-org state=installed update_cache=true
+  when: ppadone|success
+  register: mongoinstalled
+
+- name: Create Hosts File
+  template: src=hosts dest=/etc/hosts
+  when: mongoinstalled|success
+
+- name: Create Hostname File
+  template: src=hostname dest=/etc/hostname
+  when: mongoinstalled|success
+
+- name: Create Mongo Conf
+  template: src=mongod.conf dest=/etc/mongod.conf
+  when: mongoinstalled|success
+
+- name: Create Mongo Arbiter Conf
+  template: src=mongod-arbiter.conf dest=/etc/mongod.conf
+  when: mongoinstalled|success

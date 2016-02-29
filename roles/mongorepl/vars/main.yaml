@@ -1,0 +1,9 @@
+---
+keyserver: keyserver.ubuntu.com
+keyid: EA312927
+repo: 'deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse'
+dbpath: /mongodata/
+port: 27017
+bindip: 0.0.0.0
+replicasetname: rs0
+arbiterdbpath: /mongoarb/
