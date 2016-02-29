@@ -7,3 +7,9 @@ port: 27017
 bindip: 0.0.0.0
 replicasetname: rs0
 arbiterdbpath: /mongoarb/
+mongouser: mongodb
+mongogroup: mongodb
+addsecondary: rs.add('{{ hostname }}:{{ port }}')
+addarbiter: rs.addArb('{{ hostname }}:{{ port }}')
+addbackup: 'rs.add( { host: "{{ hostname }}:{{ port }}", hidden: true } )'
+sleep: sleep(20000)

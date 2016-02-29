@@ -1,4 +1,4 @@
-127.0.0.1   localhost
-{% for host in groups['all'] %}
-    {{ host }} {{ hostname }}
+127.0.0.1	localhost
+{% for host in groups['mongoreplica'] %}
+{{ host }}	{{ hostvars[host].hostname }}
 {% endfor %}
