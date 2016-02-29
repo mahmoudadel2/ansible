@@ -44,12 +44,16 @@
   notify:
       - Restart Mongod
 
+- meta: flush_handlers
+
 - name: Create Mongo Arbiter Conf
   template: src=mongod-arbiter.conf dest=/etc/mongod.conf
   register: mongoconf
   when: mongoinstalled|success and arbiter == "true"
   notify:
       - Restart Mongod
+
+- meta: flush_handlers
 
 - name: Prepare ReplicaSet Config (Primary)
   template: src=replicaset-config.js dest=/tmp/replicaset-config.js
@@ -83,4 +87,3 @@
 - name: Execute ReplicaSet Config Script (Primary)
   shell: /usr/bin/mongo /tmp/replicaset-config.js
   when: scriptuploaded|success and primary == "true"
-  register: scriptuploaded

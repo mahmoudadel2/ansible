@@ -1,6 +1,6 @@
 ---
-- hosts: test
+- hosts: mongoreplica
   roles:
-    - mongorepl
+    - { role: "../mongorepl" }
   environment:
     LC_ALL: C

@@ -10,10 +10,6 @@
 [mongoarbiter]
 10.0.3.47 hostname=mongo04 primary=false backup=false arbiter=true
 
-[test]
-10.0.3.75 hostname=mongo05 primary=true backup=false arbiter=false
-10.0.3.21 hostname=mongo06 primary=false backup=false arbiter=true
-
 [mongoreplica:children]
 mongoprimary
 mongosecondry
