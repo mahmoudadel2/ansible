@@ -2,13 +2,15 @@
 10.0.3.145 hostname=mongo01 primary=true backup=false arbiter=false
 
 [mongosecondry]
-10.0.3.162 hostname=mongo02 primary=false backup=false arbiter=false
+10.0.3.17 hostname=mongo02 primary=false backup=false arbiter=false
+10.0.3.121 hostname=mongo05 primary=false backup=false arbiter=false
+10.0.3.210 hostname=mongo06 primary=false backup=false arbiter=false
 
 [mongobackup]
-10.0.3.241 hostname=mongo03 primary=false backup=true arbiter=false
+10.0.3.252 hostname=mongo03 primary=false backup=true arbiter=false
 
 [mongoarbiter]
-10.0.3.47 hostname=mongo04 primary=false backup=false arbiter=true
+10.0.3.127 hostname=mongo04 primary=false backup=false arbiter=true
 
 [mongoreplica:children]
 mongoprimary

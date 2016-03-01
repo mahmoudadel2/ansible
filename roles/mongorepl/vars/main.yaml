@@ -13,3 +13,4 @@ addsecondary: rs.add('{{ hostname }}:{{ port }}')
 addarbiter: rs.addArb('{{ hostname }}:{{ port }}')
 addbackup: 'rs.add( { host: "{{ hostname }}:{{ port }}", hidden: true, priority: 0 } )'
 sleep: sleep(20000)
+configscript: /tmp/replicaset-config.js

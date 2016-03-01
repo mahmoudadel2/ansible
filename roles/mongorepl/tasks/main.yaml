@@ -1,12 +1,7 @@
 ---
-- name: Install Python APT
-  apt: pkg=python-apt state=installed update_cache=true
-  register: pyaptdone
-
 - name: Add Mongo Repository Key
   apt_key: keyserver={{ keyserver }} id={{ keyid }}
   register: repokeydone
-  when: pyaptdone|success
 
 - name: Add Mongo Repository
   apt_repository: repo={{ repo }} state=present
@@ -44,8 +39,6 @@
   notify:
       - Restart Mongod
 
-- meta: flush_handlers
-
 - name: Create Mongo Arbiter Conf
   template: src=mongod-arbiter.conf dest=/etc/mongod.conf
   register: mongoconf
@@ -53,37 +46,27 @@
   notify:
       - Restart Mongod
 
-- meta: flush_handlers
-
 - name: Prepare ReplicaSet Config (Primary)
-  template: src=replicaset-config.js dest=/tmp/replicaset-config.js
+  template: src=replicaset-config.js dest={{ configscript }}
   delegate_to: localhost
   when: mongoconf|success and primary == "true"
   register: primarydone
+  notify:
+    - Upload ReplicaSet Config Script (Primary)
 
 - name: Prepare ReplicaSet Config (Secondary)
-  lineinfile: dest=/tmp/replicaset-config.js line="{{ addsecondary }}\n{{ sleep }}"
+  lineinfile: dest={{ configscript }} line="{{ addsecondary }}\n{{ sleep }}"
   delegate_to: localhost
   when: primarydone|success and primary == "false" and backup == "false" and arbiter == "false"
-  register: secondarydone
+  notify:
+    - Cleanup (Local)
 
 - name: Prepare ReplicaSet Config (Arbiter)
-  lineinfile: dest=/tmp/replicaset-config.js line="{{ addarbiter }}\n{{ sleep }}"
+  lineinfile: dest={{ configscript }} line="{{ addarbiter }}\n{{ sleep }}"
   delegate_to: localhost
-  when: secondarydone|success and primary == "false" and backup == "false" and arbiter == "true"
-  register: arbiterdone
+  when: primarydone|success and primary == "false" and backup == "false" and arbiter == "true"
 
 - name: Prepare ReplicaSet Config (Backup)
-  lineinfile: dest=/tmp/replicaset-config.js line="{{ addbackup }}\n{{ sleep }}"
+  lineinfile: dest={{ configscript }} line="{{ addbackup }}\n{{ sleep }}"
   delegate_to: localhost
-  when: arbiterdone|success and primary == "false" and backup == "true" and arbiter == "false"
-  register: backupdone
-
-- name: Upload ReplicaSet Config Script (Primary)
-  template: src=/tmp/replicaset-config.js dest=/tmp/replicaset-config.js
-  when: backupdone|success and primary == "true"
-  register: scriptuploaded
-
-- name: Execute ReplicaSet Config Script (Primary)
-  shell: /usr/bin/mongo /tmp/replicaset-config.js
-  when: scriptuploaded|success and primary == "true"
+  when: primarydone|success and primary == "false" and backup == "true" and arbiter == "false"

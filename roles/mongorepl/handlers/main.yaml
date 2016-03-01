@@ -1,3 +1,24 @@
 ---
 - name: Restart Mongod
   service: name=mongod state=restarted
+
+- name: Upload ReplicaSet Config Script (Primary)
+  template: src={{ configscript }} dest={{ configscript }}
+  when: mongoinstalled|success and primary == "true"
+  notify:
+    - Execute ReplicaSet Config Script (Primary)
+
+- name: Execute ReplicaSet Config Script (Primary)
+  shell: /usr/bin/mongo {{ configscript }}
+  when: primary == "true"
+  notify:
+    - Cleanup (Remote)
+
+- name: Cleanup (Remote)
+  file: path={{ configscript }} state=absent
+  notify:
+    - Cleanup (Local)
+
+- name: Cleanup (Local)
+  file: path={{ configscript }} state=absent
+  delegate_to: localhost
