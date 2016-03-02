@@ -4,7 +4,7 @@
 
 - name: Upload ReplicaSet Config Script (Primary)
   template: src={{ configscript }} dest={{ configscript }}
-  when: mongoinstalled|success and primary == "true"
+  when: mongoinstalled.changed and primary == "true"
   notify:
     - Execute ReplicaSet Config Script (Primary)
 
