@@ -1,0 +1,15 @@
+---
+- name: Install HAProxy
+  apt: pkg=haproxy state=installed update_cache=true
+  notify:
+      - Restart HAProxy
+
+- name: Create HAProxy Default Conf
+  template: src=haproxy dest=/etc/default/haproxy
+  notify:
+      - Restart HAProxy
+
+- name: Create HAProxy Conf
+  template: src=haproxy.cfg dest=/etc/haproxy/haproxy.cfg
+  notify:
+      - Restart HAProxy

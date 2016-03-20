@@ -1,0 +1,19 @@
+---
+statsuser: "secretuser"
+statspassword: "securepassword"
+statsurl: "/mystats"
+frontendname: "myfrontend"
+frontendip: "*"
+frontendport: "80"
+backendname: "mybackend"
+balancealgorithm: "roundrobin"
+backendhosts:
+  backend1:
+    host: "10.0.0.11"
+    port: "80"
+    parameters: "check"
+
+  backend2:
+    host: "10.0.0.12"
+    port: "80"
+    parameters: "check backup"
