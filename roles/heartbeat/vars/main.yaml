@@ -1,0 +1,5 @@
+---
+broadcastinterface: "eth0"
+authsecret: "yoursecret"
+floatingip: "10.0.0.20"
+notificationemail: "youremail@org.tld"

@@ -1,0 +1,13 @@
+debugfile /var/log/ha-debug
+logfile /var/log/ha-log
+logfacility     local0
+keepalive 2
+deadtime 15
+warntime 5
+initdead 60
+udpport 694
+bcast {{ broadcastinterface }}
+auto_failback off
+{% for host in groups['ha-cluster'] %}
+node {{ hostvars[host].hostname }}
+{% endfor %}

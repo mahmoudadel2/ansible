@@ -1,0 +1,28 @@
+---
+- name: Install Heartbeat
+  apt: pkg=heartbeat state=installed update_cache=true
+  notify:
+      - Restart Heartbeat
+
+- name: Create Hosts File
+  template: src=hosts dest=/etc/hosts
+
+- name: Create Heartbeat ha.cf
+  template: src=ha.cf dest=/etc/ha.d/ha.cf
+  notify:
+      - Restart Heartbeat
+
+- name: Create Heartbeat authkeys
+  template: src=authkeys dest=/etc/ha.d/authkeys mode=0600
+  notify:
+      - Restart Heartbeat
+
+- name: Create Heartbeat haresources
+  template: src=haresources dest=/etc/ha.d/haresources
+  notify:
+      - Restart Heartbeat
+
+- name: Allow Non-Local IP Bind
+  lineinfile: dest=/etc/sysctl.conf line="net.ipv4.ip_nonlocal_bind = 1"
+  notify:
+      - Load Kernel Config

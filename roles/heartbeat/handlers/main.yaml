@@ -1,0 +1,6 @@
+---
+- name: Restart Heartbeat
+  service: name=heartbeat state=restarted
+
+- name: Load Kernel Config
+  shell: /sbin/sysctl -p
