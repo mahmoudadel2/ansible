@@ -1,4 +1,4 @@
 ---
-- hosts: haproxy
+- hosts: ha-cluster
   roles:
-    - { role: "../haproxy" }
+    - { role: "../heartbeat" }
