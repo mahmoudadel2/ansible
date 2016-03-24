@@ -1,6 +1,5 @@
-
 {% for host in groups['ha-cluster'] %}
-{% if {{ hostvars[host].primary }} == "true" %}
+{% if hostvars[host].primary == "true" %}
 {{ hostvars[host].hostname }} IPaddr::{{ floatingip }}
 {{ hostvars[host].hostname }} MailTo::{{ notificationemail }}::Cluster_Failover_Action
 {% endif %}

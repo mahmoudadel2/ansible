@@ -7,7 +7,7 @@ warntime 5
 initdead 60
 udpport 694
 bcast {{ broadcastinterface }}
-auto_failback off
+auto_failback on
 {% for host in groups['ha-cluster'] %}
 node {{ hostvars[host].hostname }}
 {% endfor %}

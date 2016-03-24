@@ -4,8 +4,20 @@
   notify:
       - Restart Heartbeat
 
+- name: Install Deps.
+  apt: pkg="{{ item }}" state=installed update_cache=true
+  with_items:
+    - mailutils
+    - resource-agents
+
 - name: Create Hosts File
   template: src=hosts dest=/etc/hosts
+
+- name: Create Hostname File
+  template: src=hostname dest=/etc/hostname
+
+- name: Update Hostname
+  hostname: name={{ hostname }}
 
 - name: Create Heartbeat ha.cf
   template: src=ha.cf dest=/etc/ha.d/ha.cf
