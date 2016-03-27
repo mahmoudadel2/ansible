@@ -1,0 +1,4 @@
+---
+- hosts: virtualrouters
+  roles:
+    - { role: "../keepalived" }

@@ -1,0 +1,10 @@
+---
+name: "yourclustername"
+interface: "eth0"
+virtualrouterid: "1"
+advertinterval: "3"
+password: "yoursecret"
+floatingip: "10.0.0.20"
+notificationemail: "youremail@org.tld"
+emailfrom: "frommail@org.tld"
+smtpserver: "localhost"

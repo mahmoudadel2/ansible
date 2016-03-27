@@ -1,0 +1,18 @@
+---
+- name: Install Keepalived
+  apt: pkg=keepalived state=installed update_cache=true
+  notify:
+      - Restart Keepalived
+
+- name: Create Keepalived Conf
+  template: src=keepalived.conf dest=/etc/keepalived/keepalived.conf
+  notify:
+      - Restart Keepalived
+
+- name: Install Deps.
+  apt: pkg=mailutils state=installed update_cache=true
+
+- name: Allow Non-Local IP Bind
+  lineinfile: dest=/etc/sysctl.conf line="net.ipv4.ip_nonlocal_bind = 1"
+  notify:
+      - Load Kernel Config
